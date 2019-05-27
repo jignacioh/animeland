@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">AnimeLand</string>
+    <string name="loading">Wait...</string>
+    <string name="ingresa_con_tus_redes_sociales"><u>Ingresa con tus redes sociales</u></string>
+    <string name="text_register">Registrarme</string>
+    <string name="text_sign_in">INGRESAR</string>
+    <string name="hint_password">Contraseña</string>
+    <string name="hint_mail">Correo</string>
+    <string name="btn_register_me">REGISTRARME</string>
+
+    <string name="error_format_invalid">Correo inválido</string>
+    <string name="error_too_short">Correo muy corto</string>
+    <string name="error_pass_too_short">Contraseña muy corta</string>
+
+    <string name="error_no_mail">Ingrese un correo</string>
+    <string name="error_no_pass">Ingrese una contraseña</string>
+
+    <string name="no_error"></string>
+
+</resources>

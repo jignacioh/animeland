@@ -1,0 +1,57 @@
+{
+  "project_info": {
+    "project_number": "241941879901",
+    "firebase_url": "https://animeland-1de15.firebaseio.com",
+    "project_id": "animeland-1de15",
+    "storage_bucket": "animeland-1de15.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:241941879901:android:3ccad0b6ee4bf5d2",
+        "android_client_info": {
+
+          "package_name": "com.clearmind.animeland"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "241941879901-rohfcsi8q5el9o8n72othc4mrmovh5c9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.clearmind.animeland",
+            "certificate_hash": "aeba630aaa228e8f847e6b52d1c4480a6583245a"
+          }
+        },
+        {
+          "client_id": "241941879901-l76d2kl8u2hpm52clqq84n0j36m2fmdd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.clearmind.animeland",
+            "certificate_hash": "336593901b1fb1bdc4ee37eee4092fb5a99c4c9a"
+          }
+        },
+        {
+          "client_id": "241941879901-dk5aob6rdh0li80lm90g0h992ka2mhrp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBUpFSXs29ZwnA8WfrrB1A8-4StjwQX16A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "241941879901-dk5aob6rdh0li80lm90g0h992ka2mhrp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
