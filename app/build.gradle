@@ -8,13 +8,13 @@ apply plugin: 'com.google.gms.google-services'
 android {
     signingConfigs {
         release {
-            storeFile file('/Users/juanhurtado/Desktop/Untitled.jks')
+            storeFile file('/var/jenkins_home/keys/release.jks')
             storePassword 'Peru123.'
             keyAlias = 'paps'
             keyPassword 'Peru123.'
         }
         debug {
-            storeFile file('/Users/juanhurtado/.android/debug.keystore')
+            storeFile file('/var/jenkins_home/keys/debug.keystore')
             keyAlias = 'androiddebugkey'
             storePassword 'android'
             keyPassword 'android'
