@@ -1,8 +1,6 @@
 package com.clearmind.animeland.register
 
 import android.util.Log
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.OnLifecycleEvent
 import com.clearmind.animeland.core.base.BaseViewModel
 import android.view.View.OnFocusChangeListener
 import android.widget.EditText
@@ -11,11 +9,8 @@ import com.google.android.material.textfield.TextInputEditText
 
 
 
-
-
 class RegisterViewModel: BaseViewModel<RegisterNavigator>() {
 
-   // var tasksLiveData = MutableLiveData<MutableList<*>>()
     var form = LoginForm()
 
     private var onFocusEmail: OnFocusChangeListener?= null
@@ -37,27 +32,6 @@ class RegisterViewModel: BaseViewModel<RegisterNavigator>() {
          }
          Log.d("viewmodel", "createUserWithEmail:success")
      }
-
-    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
-    fun init() {
-
-        //tasksLiveData.postValue( repository.getTasks())
-
-    }
-    /*
-    fun actionRegister(vMail){
-        getNavigator()!!.doRegister()
-    }*/
-
-    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-    fun destroy(){
-        Log.i("onDestroy","onDestroy viewModel")
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        Log.i("onCleared","onCleared viewModel")
-    }
     companion object {
         @BindingAdapter("error")
         @JvmStatic

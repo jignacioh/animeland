@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/activity_main"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="10dp"
+                android:paddingTop="10dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="10dp">
+    <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_margin="10dp"
+            android:scaleType="center"
+            android:src="@drawable/upload" />
+    <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageNameEditText"
+            android:layout_below="@+id/imageView"
+            android:layout_marginTop="20dp"
+            android:hint="Ingrese descripción"
+            android:gravity="center"/>
+    <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imageNameEditText"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
+        <Button
+                android:id="@+id/buttonSelect"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_weight="1"
+                android:textColor="@android:color/white"
+                android:theme="@style/PrimaryButton"
+                android:text="Seleccionar imagen" />
+        <Button
+                android:id="@+id/buttonUpload"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_weight="1"
+                android:textColor="@android:color/white"
+                android:theme="@style/PrimaryButton"
+                android:text="Subir imagen" />
+    </LinearLayout>
+</RelativeLayout>

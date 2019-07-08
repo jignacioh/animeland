@@ -1,5 +1,8 @@
 package com.clearmind.animeland.core.di
 
+import androidx.work.Constraints
+import androidx.work.NetworkType
+import com.clearmind.animeland.home.MainViewModel
 import com.clearmind.animeland.login.LoginViewModel
 import com.clearmind.animeland.register.RegisterViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -27,7 +30,7 @@ val appModule = module {
     //viewModel{ UiViewModel(get()) }
     viewModel { LoginViewModel() }
     viewModel { RegisterViewModel() }
-
+    viewModel { MainViewModel() }
 
 
     //single<UiViewModel.HelloRepository> { UiViewModel.HelloRepositoryImpl() }
@@ -54,4 +57,8 @@ object RetrofitFactory {
 
 }
 
+val constraints: Constraints = Constraints.Builder()
+    .setRequiresCharging(true)
+    .setRequiredNetworkType(NetworkType.CONNECTED)
+    .build()
 

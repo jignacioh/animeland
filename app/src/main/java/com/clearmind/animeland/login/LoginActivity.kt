@@ -15,11 +15,12 @@ import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import org.koin.android.viewmodel.ext.android.viewModel
 import android.widget.Toast
-import com.clearmind.animeland.MainActivity
+import androidx.lifecycle.Observer
+import com.clearmind.animeland.home.MainActivity
+import com.clearmind.animeland.model.authentication.AuthModel
 import com.clearmind.animeland.register.RegisterActivity
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
-import kotlinx.android.synthetic.main.activity_login.*
 
 
 
@@ -27,7 +28,7 @@ import kotlinx.android.synthetic.main.activity_login.*
 class LoginActivity: BaseActivity<ActivityLoginBinding, LoginViewModel>(),LoginNavigator {
 
     companion object {
-        private const val TAG = "GoogleActivity"
+        private const val TAG = "LoginActivity"
         private const val RC_SIGN_IN = 9001
     }
 
@@ -56,8 +57,12 @@ class LoginActivity: BaseActivity<ActivityLoginBinding, LoginViewModel>(),LoginN
         mActivityTasksBinding = viewDataBinding
         viewModel.setNavigator(this)
         lifecycle.addObserver(viewModel)
-        Log.i("onCreate","onCreate activity")
 
+        initValues()
+        initObservers()
+    }
+
+    private fun initValues(){
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
@@ -65,20 +70,38 @@ class LoginActivity: BaseActivity<ActivityLoginBinding, LoginViewModel>(),LoginN
 
         mAuth = FirebaseAuth.getInstance()
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
-
-        supportActionBar!!.hide()
-
-        btn_log_in.setOnClickListener {
-            goSignIn()
-        }
-
-       // supportActionBar!!.hide()
-
     }
+
+    private fun initObservers(){
+        viewModel.form.getLiveDataLoginForm().observe(this,
+            Observer<AuthModel> { loginModel ->
+                visibleLoaderDialog()
+                doLogin(loginModel.email,loginModel.password)
+
+            })
+    }
+
+    private fun doLogin(email: String?, password: String?) {
+        showProgressDialog()
+        mAuth.signInWithEmailAndPassword(email!!, password!!)
+            .addOnCompleteListener(this) {task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI
+                    val user = mAuth.currentUser
+                    updateUI(user)
+                } else {
+                    // If sign in fails
+                    Log.w(TAG, "Sign:failure", task.exception)
+                    Toast.makeText(this, "Error al ingresar, revise su correo y/o contraseña.", Toast.LENGTH_SHORT).show()
+                    updateUI(null)
+                }
+            }
+    }
+
 
     override fun onStart() {
         super.onStart()
-        // Check if user is signed in (non-null) and update UI accordingly.
+        // Check if user is in non-null and update UI.
         val currentUser = mAuth.currentUser
         updateUI(currentUser)
 
@@ -86,41 +109,14 @@ class LoginActivity: BaseActivity<ActivityLoginBinding, LoginViewModel>(),LoginN
 
     private fun updateUI(currentUser: FirebaseUser?) {
         hideProgressDialog()
+        //If exist user then go to home
         if(currentUser != null){
-            //Do your Stuff
-            Toast.makeText(this,"Hello ${currentUser.displayName}",Toast.LENGTH_LONG).show()
+
             val intent = Intent(this, MainActivity::class.java)
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
-        }else{
-            Log.i(TAG, "No Google sign")
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        Log.i("onResume","onResume activity")
-        //viewModel.tasksLiveData.observe(this,observerTask)
-    }
-
-    /*val observerTask = Observer<MutableList<Task>> { value ->
-        tasks.addAll(value)
-        mActivityTasksBinding!!.recyclerView.adapter!!.notifyDataSetChanged()
-    }*/
-
-
-    override fun showAction(state : Boolean) {
-
-        Log.i("showAction", "doAction")
-    }
-
-    override fun showError() {
-
-    }
-    override fun onDestroy() {
-        super.onDestroy()
-        //viewModel.tasksLiveData.removeObserver(observerTask)
     }
 
     override fun goSignIn() {
@@ -149,28 +145,26 @@ class LoginActivity: BaseActivity<ActivityLoginBinding, LoginViewModel>(),LoginN
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "signInWithCredential:failure", task.exception)
-                    Toast.makeText(this, "Authentication Failed.", Toast.LENGTH_SHORT).show()
                     updateUI(null)
+                    showSimpleDialog("Error","Ha ocurrido un error, inténtelo de nuevo más tarde.")
                 }
-
-                // ...
             }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+        //Result for Google sign in Client
         if (requestCode == RC_SIGN_IN) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             try {
-                // Google Sign In was successful, authenticate with Firebase
+                // Google Sign In successful
                 val account = task.getResult(ApiException::class.java)
                 firebaseAuthWithGoogle(account!!)
             } catch (e: ApiException) {
-                // Google Sign In failed, update UI appropriately
+                // Google Sign In failed
                 Log.w(TAG, "Google sign in failed", e)
-                // ...
+                Toast.makeText(this, "Ha ocurrido un error, inténtelo de nuevo más tarde.", Toast.LENGTH_SHORT).show()
             }
         }
     }

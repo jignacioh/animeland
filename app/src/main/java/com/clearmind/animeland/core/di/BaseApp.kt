@@ -8,5 +8,6 @@ class BaseApp : Application() {
     override fun onCreate() {
         super.onCreate()
         startKoin(this, appModules)
+
     }
 }

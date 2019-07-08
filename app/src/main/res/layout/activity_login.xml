@@ -19,7 +19,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@android:color/black"
-                tools:context=".MainActivity">
+                tools:context=".home.MainActivity">
 
             <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guidelineTop"
@@ -131,7 +131,13 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textColor="@android:color/white"
-                            android:hint="@string/hint_mail"/>
+                            android:text="@={loginViewModel.form.fields.email}"
+                            android:hint="@string/hint_mail"
+                            android:singleLine="true"
+                            android:inputType="textEmailAddress"
+                            android:imeOptions="actionNext"
+                            app:onFocus="@{loginViewModel.getEmailOnFocusChangeListener()}"
+                            app:error="@{loginViewModel.form.emailError}"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -152,7 +158,13 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textColor="@android:color/white"
-                            android:hint="@string/hint_password"/>
+                            android:hint="@string/hint_password"
+                            android:text="@={loginViewModel.form.fields.password}"
+                            android:inputType="textPassword"
+                            android:singleLine="true"
+                            android:imeOptions="actionDone"
+                            app:onFocus="@{loginViewModel.getPasswordOnFocusChangeListener()}"
+                            app:error="@{loginViewModel.form.passwordError}"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -167,6 +179,7 @@
                         android:text="@string/text_sign_in"
                         android:textColor="@android:color/white"
                         android:theme="@style/PrimaryButton"
+                        android:enabled="@{loginViewModel.form.valid}"
                         app:layout_constraintBottom_toTopOf="@+id/guidelineLoginView4"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -199,7 +212,8 @@
                         app:layout_constraintBottom_toTopOf="@+id/guidelineLoginView6"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/guidelineLoginView5"/>
+                        app:layout_constraintTop_toBottomOf="@+id/guidelineLoginView5"
+                        android:onClick="@{() -> loginViewModel.loginWithGmail()}"/>
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

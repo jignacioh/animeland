@@ -10,11 +10,18 @@
       "client_info": {
         "mobilesdk_app_id": "1:241941879901:android:3ccad0b6ee4bf5d2",
         "android_client_info": {
-
           "package_name": "com.clearmind.animeland"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "241941879901-5onj2d8ldqss4i99lsrkjd8ohn92bv3p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.clearmind.animeland",
+            "certificate_hash": "bce7ba46bd05fe93fbd265b444f47f16ae5ef6ac"
+          }
+        },
         {
           "client_id": "241941879901-rohfcsi8q5el9o8n72othc4mrmovh5c9.apps.googleusercontent.com",
           "client_type": 1,

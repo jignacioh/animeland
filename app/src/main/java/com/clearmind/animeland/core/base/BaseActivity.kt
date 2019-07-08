@@ -14,10 +14,10 @@ import android.view.inputmethod.InputMethodManager
 import com.clearmind.animeland.R
 import android.util.Log
 import androidx.appcompat.app.AlertDialog
-
-
-
-
+import android.Manifest.permission.ACCESS_FINE_LOCATION
+import androidx.core.content.ContextCompat
+import android.Manifest.permission.ACCESS_COARSE_LOCATION
+import android.widget.Toast
 
 
 abstract class BaseActivity<T : ViewDataBinding, V : BaseViewModel<*>> : AppCompatActivity() {
@@ -83,13 +83,22 @@ abstract class BaseActivity<T : ViewDataBinding, V : BaseViewModel<*>> : AppComp
             requestPermissions(permissions, requestCode)
         }
     }
+
+    /**
+     * All about permission
+     */
+    fun checkLocationPermission(): Boolean {
+        val result3 = ContextCompat.checkSelfPermission(this, ACCESS_COARSE_LOCATION)
+        val result4 = ContextCompat.checkSelfPermission(this, ACCESS_FINE_LOCATION)
+        return result3 == PackageManager.PERMISSION_GRANTED && result4 == PackageManager.PERMISSION_GRANTED
+    }
     override fun onDestroy() {
         super.onDestroy()
         lifecycle.removeObserver(viewModel)
     }
 
     fun showProgressDialog() {
-        progressDialog.setMessage(getString(R.string.loading))
+        progressDialog.setMessage(getString(com.clearmind.animeland.R.string.loading))
         progressDialog.isIndeterminate = true
         progressDialog.show()
     }
