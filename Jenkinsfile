@@ -6,9 +6,9 @@ node {
 		git url: 'https://github.com/jignacioh/animeland.git'
 	} 
         stage('Clean Build') {
-            dir("android") {
-               sh './gradlew clean'
-            }   
+           
+            sh './gradlew clean'
+              
         }
        
         stage('Compile') {
