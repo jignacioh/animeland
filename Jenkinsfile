@@ -12,19 +12,19 @@ node {
         }
        
         stage('Compile') {
-		  steps {
+		 
 			// Compile the app and its dependencies
 			sh './gradlew compileDebugSources'
-		  }
+		  
 		}
 		stage('Build APK') {
-		  steps {
+		  
 			// Finish building and packaging the APK
 			sh './gradlew assembleDebug'
 
 			// Archive the APKs so that they can be downloaded from Jenkins
 			archiveArtifacts artifacts: '**/*.apk', fingerprint: true, onlyIfSuccessful: true   
-		  }
+		  
 		}
 		
 		}catch (caughtError) { 
