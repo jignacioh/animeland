@@ -1,7 +1,8 @@
 @Library('jenkins-shared-library')_
 def err = null
 
-node {
+pipeline {
+	agent any
       try {
 	      stages {
 			stage ('Clone sources') {
