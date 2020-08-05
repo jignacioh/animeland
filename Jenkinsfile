@@ -5,23 +5,30 @@ pipeline {
 	agent any
 	stages {
 		stage ('Clone sources') {
-			git url: 'https://github.com/jignacioh/animeland.git'
-		} 
+			steps {
+				git url: 'https://github.com/jignacioh/animeland.git'
+			} 	
+		
 		stage('Clean Build') {
-		    	sh './gradlew clean'
-
+			steps {
+		    		sh './gradlew clean'
+			} 
 		}
         	stage('Compile') {
 			// Compile the app and its dependencies
-			sh './gradlew compileDebugSources'
+			steps {
+				sh './gradlew compileDebugSources'
+			}
 		  
 		}
 		stage('Build APK') {
 			// Finish building and packaging the APK
-			sh './gradlew assembleDebug'
+			steps {
+				sh './gradlew assembleDebug'
 
-			// Archive the APKs so that they can be downloaded from Jenkins
-			archiveArtifacts artifacts: '**/*.apk', fingerprint: true, onlyIfSuccessful: true   
+				// Archive the APKs so that they can be downloaded from Jenkins
+				archiveArtifacts artifacts: '**/*.apk', fingerprint: true, onlyIfSuccessful: true   
+			}
 		  
 		}
 	}
