@@ -8,7 +8,7 @@ pipeline {
 			steps {
 				git url: 'https://github.com/jignacioh/animeland.git'
 			} 	
-		
+		}
 		stage('Clean Build') {
 			steps {
 		    		sh './gradlew clean'
