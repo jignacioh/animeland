@@ -17,14 +17,14 @@ pipeline {
         	stage('Compile') {
 			// Compile the app and its dependencies
 			steps {
-				sh './gradlew compileDebugSources'
+				sh './gradlew compileReleaseSources'
 			}
 		  
 		}
 		stage('Build APK') {
 			// Finish building and packaging the APK
 			steps {
-				sh './gradlew assembleDebug'
+				sh './gradlew assembleRelease'
 
 				// Archive the APKs so that they can be downloaded from Jenkins
 				archiveArtifacts artifacts: '**/*.apk', fingerprint: true, onlyIfSuccessful: true   
@@ -35,7 +35,7 @@ pipeline {
 			// Finish building and packaging the APK
 			steps {
 				withEnv(environment) {
-					sh './gradlew assembleDebug appDistributionUploadDebug'   
+					sh './gradlew assembleRelease appDistributionUploadRelease'   
 				}
 			}
 		}
