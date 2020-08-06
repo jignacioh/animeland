@@ -4,21 +4,29 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.appdistribution'
 
 android {
     signingConfigs {
         release {
-            storeFile file('/Users/everis/Downloads/Untitled.jks')
+            storeFile file('/Volumes/PUBLIC/AndroidCosas/Untitled.jks')
             storePassword 'Peru123.'
             keyAlias = 'paps'
             keyPassword 'Peru123.'
         }
-        /*debug {
+        debug {
+            /*
             storeFile file('/var/jenkins_home/keys/debug.keystore')
             keyAlias = 'androiddebugkey'
             storePassword 'android'
             keyPassword 'android'
-        }*/
+            */
+            firebaseAppDistribution {
+                releaseNotes = "Test notes"
+                serviceCredentialsFile = System.getenv("GOOGLE_APPLICATION_CREDENTIALS")
+                groups="grupo_testers"
+            }
+        }
     }
     compileSdkVersion 28
     defaultConfig {
