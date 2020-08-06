@@ -1,6 +1,6 @@
 @Library('jenkins-shared-library')_
 def err = null
-List environment = ["GOOGLE_APPLICATIONS_CREDENTIALS=$HOME/.android/service-credential-animeland.json"]
+List environment = ["GOOGLE_APPLICATION_CREDENTIALS=$HOME/.android/service-credential-animeland.json"]
 pipeline {
 	agent any
 	stages {
