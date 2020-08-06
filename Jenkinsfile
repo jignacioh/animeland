@@ -33,8 +33,10 @@ pipeline {
 		}
 		stage('Distribute') {
 			// Finish building and packaging the APK
-			withEnv(environment) {
-				sh './gradlew assembleDebug appDistributionUploadDebug'   
+			steps {
+				withEnv(environment) {
+					sh './gradlew assembleDebug appDistributionUploadDebug'   
+				}
 			}
 		}
 	}
