@@ -9,7 +9,7 @@ apply plugin: 'com.google.firebase.appdistribution'
 android {
     signingConfigs {
         release {
-            storeFile file('C:\Users\PERSONAL\.android\Untitled.jks')
+            storeFile file('C:/Users/PERSONAL/.android/Untitled.jks')
             storePassword 'Peru123.'
             keyAlias = 'paps'
             keyPassword 'Peru123.'
