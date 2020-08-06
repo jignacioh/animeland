@@ -1,6 +1,6 @@
 @Library('jenkins-shared-library')_
 def err = null
-
+List environment = ["GOOGLE_APPLICATIONS_CREDENTIALS=$HOME/.android/service-credential-animeland.json"]
 pipeline {
 	agent any
 	stages {
@@ -30,6 +30,12 @@ pipeline {
 				archiveArtifacts artifacts: '**/*.apk', fingerprint: true, onlyIfSuccessful: true   
 			}
 		  
+		}
+		stage('Distribute') {
+			// Finish building and packaging the APK
+			withEnv(environment) {
+				sh './gradlew assembleDebug appDistributionUploadDebug'   
+			}
 		}
 	}
 	post {
