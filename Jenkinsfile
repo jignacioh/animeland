@@ -35,7 +35,7 @@ pipeline {
 			// Finish building and packaging the APK
 			steps {
 				withEnv(environment) {
-					sh './gradlew assembleRelease appDistributionUploadRelease'   
+					sh './gradlew assembleRelease appDistributionUploadRelease --stacktrace'   
 				}
 			}
 		}
