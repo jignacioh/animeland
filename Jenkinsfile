@@ -42,7 +42,7 @@ pipeline {
 		
 		stage('Distribute AppCenter') {
 		    steps {
-			appCenter apiToken: '71ec0c9a6bafa7aba21aee25d57496400bacb61a',
+			appCenter apiToken: 'e95a24bb79c5401c532a391d7c1548737f7f57d0',
 				ownerName: 'clapjunior2-gmail.com',
 				appName: 'Animeland',
 				pathToApp: 'app/build/outputs/apk/release/app-release.apk',
