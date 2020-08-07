@@ -56,7 +56,7 @@ pipeline {
 			script {
 		    		slackNotifier(currentBuild.currentResult)
 			}
-		    	cleanWs()
+		    	//cleanWs()
 		}
     	}
 }
