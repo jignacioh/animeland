@@ -31,13 +31,23 @@ pipeline {
 			}
 		  
 		}
-		stage('Distribute') {
+		stage('Distribute Firebase') {
 			// Finish building and packaging the APK
 			steps {
 				withEnv(environment) {
 					sh './gradlew assembleRelease appDistributionUploadRelease --stacktrace'   
 				}
 			}
+		}
+		
+		stage('Distribute AppCenter') {
+		    steps {
+			appCenter apiToken: '71ec0c9a6bafa7aba21aee25d57496400bacb61a',
+				ownerName: 'clapjunior2-gmail.com',
+				appName: 'Animeland',
+				pathToApp: 'build/app/outputs/apk/release/app-release.apk',
+				distributionGroups: 'test-group'
+		    }
 		}
 	}
 	post {
