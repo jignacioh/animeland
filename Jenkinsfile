@@ -45,7 +45,7 @@ pipeline {
 			appCenter apiToken: '71ec0c9a6bafa7aba21aee25d57496400bacb61a',
 				ownerName: 'clapjunior2-gmail.com',
 				appName: 'Animeland',
-				pathToApp: 'build/app/outputs/apk/release/app-release.apk',
+				pathToApp: 'app/build/outputs/apk/release/app-release.apk',
 				distributionGroups: 'test-group'
 		    }
 		}
