@@ -43,7 +43,7 @@ pipeline {
 		stage('Distribute AppCenter') {
 		    steps {
 			appCenter apiToken: 'e95a24bb79c5401c532a391d7c1548737f7f57d0',
-				ownerName: 'clapjunior2-gmail.com',
+				ownerName: 'jignacioh',
 				appName: 'Animeland',
 				pathToApp: 'app/build/outputs/apk/release/app-release.apk',
 				distributionGroups: 'test-group'
