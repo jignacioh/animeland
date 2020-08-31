@@ -37,7 +37,7 @@ android {
     defaultConfig {
         applicationId "com.clearmind.animeland"
         minSdkVersion 21
-        targetSdkVersion 28
+        targetSdkVersion 29
         versionCode 2
         versionName "1.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -56,17 +56,27 @@ android {
     productFlavors {
     }
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
 }
 
 ext {
     work_manager_version = '1.0.0'
     room_version = "2.1.0"
+    nav_version = "2.3.0"
+    coil_version = "0.12.0"
 }
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.core:core-ktx:1.0.2'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'com.google.firebase:firebase-core:16.0.9'
@@ -75,6 +85,7 @@ dependencies {
     implementation 'org.koin:koin-android:1.0.2'
     implementation 'org.koin:koin-android-viewmodel:1.0.2'
     implementation 'org.koin:koin-java:1.0.2'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     // view model
     kapt 'androidx.lifecycle:lifecycle-extensions:2.2.0-alpha01'
     implementation 'com.google.firebase:firebase-auth:16.0.5'
@@ -82,7 +93,7 @@ dependencies {
     implementation 'com.firebaseui:firebase-ui-database:4.3.2'
     kapt 'androidx.lifecycle:lifecycle-compiler:2.2.0-alpha01'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.1.1'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.0.0'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.1.0'
     implementation 'com.squareup.retrofit2:retrofit:2.5.0'
     implementation 'com.squareup.retrofit2:converter-moshi:2.5.0'
     implementation 'com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2'
@@ -102,4 +113,23 @@ dependencies {
 
     implementation "com.google.firebase:firebase-core:16.0.4"
     implementation 'com.google.firebase:firebase-storage:16.0.5'
+
+    implementation 'com.firebaseui:firebase-ui-auth:6.2.0'
+
+    // Required only if Facebook login support is required
+    // Find the latest Facebook SDK releases here: https://goo.gl/Ce5L94
+    implementation 'com.facebook.android:facebook-share:4.28.0'
+
+    // Required only if Twitter login support is required
+    // Find the latest Twitter SDK releases here: https://goo.gl/E5wZvQ
+    // implementation 'com.twitter.sdk.android:twitter-core:3.0'
+
+    // Kotlin
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+    // Dynamic Feature Module Support
+    implementation "androidx.navigation:navigation-dynamic-features-fragment:$nav_version"
+
+    //Coil
+    implementation "io.coil-kt:coil:$coil_version"
 }

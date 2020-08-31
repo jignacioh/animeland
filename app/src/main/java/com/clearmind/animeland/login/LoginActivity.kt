@@ -16,9 +16,12 @@ import com.google.firebase.auth.FirebaseAuth
 import org.koin.android.viewmodel.ext.android.viewModel
 import android.widget.Toast
 import androidx.lifecycle.Observer
+import com.clearmind.animeland.home.HomeActivity
 import com.clearmind.animeland.home.MainActivity
 import com.clearmind.animeland.model.authentication.AuthModel
 import com.clearmind.animeland.register.RegisterActivity
+import com.clearmind.animeland.splash.SplashActivity
+import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 
@@ -49,8 +52,6 @@ class LoginActivity: BaseActivity<ActivityLoginBinding, LoginViewModel>(),LoginN
     get() = BR.loginViewModel
 
     private var mActivityTasksBinding: ActivityLoginBinding? = null
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -112,16 +113,30 @@ class LoginActivity: BaseActivity<ActivityLoginBinding, LoginViewModel>(),LoginN
         //If exist user then go to home
         if(currentUser != null){
 
-            val intent = Intent(this, MainActivity::class.java)
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            val intent = Intent(this, HomeActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
         }
     }
 
     override fun goSignIn() {
-        val signInIntent = mGoogleSignInClient.signInIntent
-        startActivityForResult(signInIntent, RC_SIGN_IN)
+        //val signInIntent = mGoogleSignInClient.signInIntent
+        //startActivityForResult(signInIntent, RC_SIGN_IN)
+
+        // Choose authentication providers
+        val providers: List<AuthUI.IdpConfig> = listOf(
+                AuthUI.IdpConfig.EmailBuilder().build(),
+                AuthUI.IdpConfig.PhoneBuilder().build(),
+                AuthUI.IdpConfig.GoogleBuilder().build(),
+                AuthUI.IdpConfig.FacebookBuilder().build())
+        // Create and launch sign-in intent
+        startActivityForResult(
+                AuthUI.getInstance()
+                        .createSignInIntentBuilder()
+                        .setAvailableProviders(providers)
+                        .build(),
+                SplashActivity.RC_SIGN_IN)
     }
 
     override fun goToRegisterView() {

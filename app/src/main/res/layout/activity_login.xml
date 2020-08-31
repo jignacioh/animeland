@@ -201,19 +201,20 @@
                         android:onClick="@{() -> loginViewModel.goToRegisterActivity()}"/>
 
                 <TextView
-                        android:id="@+id/label_go_to_sign_up"
-                        android:text="@string/ingresa_con_tus_redes_sociales"
-                        android:textColor="@android:color/white"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:focusableInTouchMode="true"
-                        app:layout_constraintBottom_toTopOf="@+id/guidelineLoginView6"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/guidelineLoginView5"
-                        android:onClick="@{() -> loginViewModel.loginWithGmail()}"/>
+                    android:id="@+id/label_go_to_sign_up"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:onClick="@{() -> loginViewModel.loginWithSocialNetwork()}"
+                    android:padding="5dp"
+                    android:text="@string/ingresa_con_tus_redes_sociales"
+                    android:textColor="@android:color/white"
+                    app:layout_constraintBottom_toTopOf="@+id/guidelineLoginView6"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/guidelineLoginView5" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

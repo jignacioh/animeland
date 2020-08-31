@@ -49,7 +49,7 @@ class LoginViewModel() : BaseViewModel<LoginNavigator>() {
     fun goToRegisterActivity(){
         getNavigator()!!.goToRegisterView()
     }
-    fun loginWithGmail(){
+    fun loginWithSocialNetwork(){
         getNavigator()!!.goSignIn()
     }
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)

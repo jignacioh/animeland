@@ -47,7 +47,6 @@ class RegisterActivity: BaseActivity<ActivityRegisterBinding, RegisterViewModel>
         super.onCreate(savedInstanceState)
         mActivityTasksBinding = viewDataBinding
         viewModel.setNavigator(this)
-
         lifecycle.addObserver(viewModel)
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -57,10 +56,7 @@ class RegisterActivity: BaseActivity<ActivityRegisterBinding, RegisterViewModel>
 
         mAuth = FirebaseAuth.getInstance()
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
-
-
         initObservers()
-
     }
 
     private fun initObservers(){

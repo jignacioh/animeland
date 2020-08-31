@@ -6,6 +6,7 @@
     <string name="text_sign_in">INGRESAR</string>
     <string name="hint_password">Contraseña</string>
     <string name="hint_mail">Correo</string>
+    <string name="hint_name">Name</string>
     <string name="btn_register_me">REGISTRARME</string>
 
     <string name="error_format_invalid">Correo inválido</string>
@@ -15,6 +16,22 @@
     <string name="error_no_mail">Ingrese un correo</string>
     <string name="error_no_pass">Ingrese una contraseña</string>
 
-    <string name="no_error"></string>
+    <string name="no_error">Error</string>
+
+    <string name="facebook_application_id">306830810650297</string>
+    <string name="facebook_app_id">306830810650297</string>
+    <string name="fb_login_protocol_scheme">fb306830810650297</string>
+
+    <!-- Twitter consumer key and secret -->
+    <string name="twitter_consumer_key" translatable="false">yW9RGM3XyLVhWzdrQICnKiPOI</string>
+    <string name="twitter_consumer_secret" translatable="false">ejRsLrGm0Dg2gKdtqL6XsbO38rV9STw059WDslOvmFAx10c6LF</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="label_home_fragment">Home</string>
+    <string name="label_general_fragment">General</string>
+    <string name="label_upload_fragment">Upload</string>
+
+    <string name="action_logout">Logout</string>
+    <string name="action_update">Update my profile</string>
 
 </resources>

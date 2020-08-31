@@ -250,7 +250,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNav
 // [END auth_with_google]
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { menuItem ->
-        when (menuItem.itemId) {
+        /*when (menuItem.itemId) {
             R.id.navigation_blog -> {
                 val fragment = HomeFragment()
                 supportFragmentManager.beginTransaction().replace(R.id.container, fragment, fragment.javaClass.simpleName)
@@ -269,7 +269,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNav
                     .commit()
                 return@OnNavigationItemSelectedListener true
             }
-        }
+        }*/
         false
     }
 
