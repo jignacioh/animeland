@@ -1,5 +1,6 @@
 package com.clearmind.animeland.setting
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,6 +14,10 @@ import coil.transform.CircleCropTransformation
 import com.clearmind.animeland.R
 import com.clearmind.animeland.databinding.FragmentSettingBinding
 import com.clearmind.animeland.databinding.FragmentSettingBindingImpl
+import com.clearmind.animeland.login.LoginActivity
+import com.firebase.ui.auth.AuthUI
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 
 
@@ -50,7 +55,6 @@ class SettingFragment : Fragment() {
             val photoUrl: Uri? = user.photoUrl
             photoUrl.let {
                 binding.profileImageView.load(it) {
-                    crossfade(true)
                     placeholder(R.drawable.ic_profile_account_128)
                     transformations(CircleCropTransformation())
                 }
@@ -79,7 +83,13 @@ class SettingFragment : Fragment() {
         }
 
         binding.logoutTextView.setOnClickListener {
-
+            AuthUI.getInstance()
+                    .signOut(requireContext().applicationContext)
+                    .addOnCompleteListener {
+                        val homeIntent = Intent(activity, LoginActivity::class.java)
+                        startActivity(homeIntent)
+                        activity?.finish()
+                    }
         }
     }
 
