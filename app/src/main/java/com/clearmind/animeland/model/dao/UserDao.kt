@@ -1,8 +1,7 @@
 package com.clearmind.animeland.model.dao
 
-import com.clearmind.animeland.model.User
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import androidx.room.*
+import com.clearmind.animeland.model.User
 
 
 @Dao

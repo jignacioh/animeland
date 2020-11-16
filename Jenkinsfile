@@ -42,13 +42,21 @@ pipeline {
 		
 		stage('Distribute AppCenter') {
 		    steps {
-			appCenter apiToken: 'e95a24bb79c5401c532a391d7c1548737f7f57d0',
+			    appCenter apiToken: 'e95a24bb79c5401c532a391d7c1548737f7f57d0',
 				ownerName: 'jignacioh',
 				appName: 'Animeland',
 				pathToApp: 'app/build/outputs/apk/release/app-release.apk',
 				distributionGroups: 'test-group'
 		    }
 		}
+		stage('Static Analysis') {
+             steps {
+                echo 'Static Analysis'
+                // Run Lint and analyse the results
+                sh './gradlew lint'
+                androidLint()
+             }
+        }
 	}
 	post {
 		always {
@@ -58,6 +66,6 @@ pipeline {
 			}
 		    	//cleanWs()
 		}
-    	}
+    }
 }
   

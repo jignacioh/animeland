@@ -2,8 +2,6 @@ package com.clearmind.animeland.home
 
 import android.app.ProgressDialog
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -83,9 +81,7 @@ class UploadFragment : Fragment() {
 
             uploadTask?.continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> { task ->
                 if (!task.isSuccessful) {
-                    task.exception?.let {
-                        it.printStackTrace()
-                    }
+                    task.exception?.printStackTrace()
                 }
                 return@Continuation ref.downloadUrl
             })?.addOnCompleteListener { task ->

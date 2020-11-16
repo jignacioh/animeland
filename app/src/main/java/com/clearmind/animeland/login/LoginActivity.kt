@@ -3,29 +3,26 @@ package com.clearmind.animeland.login
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import com.clearmind.animeland.R
+import android.widget.Toast
+import androidx.lifecycle.Observer
 import com.clearmind.animeland.BR
+import com.clearmind.animeland.R
 import com.clearmind.animeland.core.base.BaseActivity
 import com.clearmind.animeland.databinding.ActivityLoginBinding
+import com.clearmind.animeland.home.HomeActivity
+import com.clearmind.animeland.model.authentication.AuthModel
+import com.clearmind.animeland.register.RegisterActivity
+import com.clearmind.animeland.splash.SplashActivity
+import com.firebase.ui.auth.AuthUI
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
-import org.koin.android.viewmodel.ext.android.viewModel
-import android.widget.Toast
-import androidx.lifecycle.Observer
-import com.clearmind.animeland.home.HomeActivity
-import com.clearmind.animeland.home.MainActivity
-import com.clearmind.animeland.model.authentication.AuthModel
-import com.clearmind.animeland.register.RegisterActivity
-import com.clearmind.animeland.splash.SplashActivity
-import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
-
-
+import org.koin.android.viewmodel.ext.android.viewModel
 
 
 class LoginActivity: BaseActivity<ActivityLoginBinding, LoginViewModel>(),LoginNavigator {
@@ -106,6 +103,14 @@ class LoginActivity: BaseActivity<ActivityLoginBinding, LoginViewModel>(),LoginN
         val currentUser = mAuth.currentUser
         updateUI(currentUser)
 
+    }
+
+    override fun onFragmentAttached() {
+        TODO("Not yet implemented")
+    }
+
+    override fun onFragmentDetached() {
+        TODO("Not yet implemented")
     }
 
     private fun updateUI(currentUser: FirebaseUser?) {

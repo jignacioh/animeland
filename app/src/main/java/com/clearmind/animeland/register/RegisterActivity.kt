@@ -1,22 +1,19 @@
 package com.clearmind.animeland.register
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
+import androidx.lifecycle.Observer
 import com.clearmind.animeland.BR
 import com.clearmind.animeland.R
 import com.clearmind.animeland.core.base.BaseActivity
 import com.clearmind.animeland.databinding.ActivityRegisterBinding
+import com.clearmind.animeland.login.LoginActivity
+import com.clearmind.animeland.model.authentication.AuthModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import org.koin.android.viewmodel.ext.android.viewModel
-import android.content.Intent
-import androidx.lifecycle.Observer
-import com.clearmind.animeland.login.LoginActivity
-import com.clearmind.animeland.model.authentication.AuthModel
-
-
 
 
 class RegisterActivity: BaseActivity<ActivityRegisterBinding, RegisterViewModel>(), RegisterNavigator {
@@ -57,6 +54,14 @@ class RegisterActivity: BaseActivity<ActivityRegisterBinding, RegisterViewModel>
         mAuth = FirebaseAuth.getInstance()
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
         initObservers()
+    }
+
+    override fun onFragmentAttached() {
+        TODO("Not yet implemented")
+    }
+
+    override fun onFragmentDetached() {
+        TODO("Not yet implemented")
     }
 
     private fun initObservers(){

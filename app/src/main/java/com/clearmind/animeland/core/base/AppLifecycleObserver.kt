@@ -9,27 +9,27 @@ class AppLifecycleObserver : LifecycleObserver{
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun onCreateEvent() {
-        Log.d("TAG", "ON_CREATE has been emitted");
+        Log.d("TAG", "ON_CREATE has been emitted")
     }
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     fun onStartEvent() {
-        Log.d("TAG", "ON_CREATE has been emitted");
+        Log.d("TAG", "ON_CREATE has been emitted")
     }
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     fun onResumeEvent() {
-        Log.d("TAG", "ON_CREATE has been emitted");
+        Log.d("TAG", "ON_CREATE has been emitted")
     }
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
     fun onPauseEvent() {
-        Log.d("TAG", "ON_CREATE has been emitted");
+        Log.d("TAG", "ON_CREATE has been emitted")
     }
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     fun onStopEvent() {
-        Log.d("TAG", "ON_CREATE has been emitted");
+        Log.d("TAG", "ON_CREATE has been emitted")
     }
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     fun onDestroyEvent() {
-        Log.d("TAG", "ON_CREATE has been emitted");
+        Log.d("TAG", "ON_CREATE has been emitted")
     }
 
 }

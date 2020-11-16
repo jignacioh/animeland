@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -16,7 +15,6 @@ import androidx.room.Room
 import com.clearmind.animeland.R
 import com.clearmind.animeland.core.di.AppDatabase
 import com.clearmind.animeland.model.Place
-import com.clearmind.animeland.model.feed.Feed
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
@@ -36,10 +34,6 @@ class FeedFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
         inflater.inflate(R.layout.fragment_feed, container, false)
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         auth = FirebaseAuth.getInstance()
@@ -51,14 +45,14 @@ class FeedFragment : Fragment() {
         firebaseData()
 
         db = Room.databaseBuilder(
-            activity!!.applicationContext,
+            requireActivity().applicationContext,
             AppDatabase::class.java, "database-name"
         ).build()
 
         GlobalScope.launch {
             var data=db!!.userDao().getAll()
 
-            data?.forEach {
+            data.forEach {
                 println("data"+it.uid+" and "+it.username+" and "+it.usermail+" and "+it.lastLatitude)
             }
         }

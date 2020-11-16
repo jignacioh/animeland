@@ -5,6 +5,12 @@
 
     <data>
 
+        <import type="android.view.View" />
+
+        <variable
+            name="settingViewModel"
+            type="com.clearmind.animeland.setting.SettingViewModel" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -5,8 +5,6 @@ import androidx.work.NetworkType
 import com.clearmind.animeland.home.MainViewModel
 import com.clearmind.animeland.login.LoginViewModel
 import com.clearmind.animeland.register.RegisterViewModel
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.firebase.auth.FirebaseAuth
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import org.koin.android.viewmodel.ext.koin.viewModel
 import org.koin.dsl.module.module

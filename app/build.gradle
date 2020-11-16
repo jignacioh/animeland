@@ -7,6 +7,11 @@ apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.appdistribution'
 
 android {
+    lintOptions {
+        abortOnError false
+        lintConfig file('../lint.xml')
+    }
+
     signingConfigs {
         release {
             storeFile file('C:/Users/PERSONAL/.android/Untitled.jks')
@@ -33,7 +38,7 @@ android {
             }
         }
     }
-    compileSdkVersion 28
+    compileSdkVersion 29
     defaultConfig {
         applicationId "com.clearmind.animeland"
         minSdkVersion 21
@@ -67,9 +72,9 @@ android {
 }
 
 ext {
-    work_manager_version = '1.0.0'
-    room_version = "2.1.0"
-    nav_version = "2.3.0"
+    work_manager_version = '1.0.1'
+    room_version = "2.2.5"
+    nav_version = "2.3.1"
     coil_version = "0.12.0"
 }
 
@@ -77,42 +82,42 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'androidx.core:core-ktx:1.0.2'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    implementation 'com.google.firebase:firebase-core:16.0.9'
-    implementation 'com.google.android.gms:play-services-auth:16.0.1'
+    implementation 'androidx.core:core-ktx:1.3.2'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'com.google.firebase:firebase-core:18.0.0'
+    implementation 'com.google.android.gms:play-services-auth:19.0.0'
     //KOIN
     implementation 'org.koin:koin-android:1.0.2'
     implementation 'org.koin:koin-android-viewmodel:1.0.2'
     implementation 'org.koin:koin-java:1.0.2'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     // view model
-    kapt 'androidx.lifecycle:lifecycle-extensions:2.2.0-alpha01'
-    implementation 'com.google.firebase:firebase-auth:16.0.5'
-    implementation 'com.google.firebase:firebase-database:16.0.1'
+    kapt 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+    implementation 'com.google.firebase:firebase-auth:20.0.1'
+    implementation 'com.google.firebase:firebase-database:19.5.1'
     implementation 'com.firebaseui:firebase-ui-database:4.3.2'
-    kapt 'androidx.lifecycle:lifecycle-compiler:2.2.0-alpha01'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.1.1'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.1.0'
+    kapt 'androidx.lifecycle:lifecycle-compiler:2.3.0-beta01'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.8'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.8'
     implementation 'com.squareup.retrofit2:retrofit:2.5.0'
     implementation 'com.squareup.retrofit2:converter-moshi:2.5.0'
     implementation 'com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2'
     implementation 'com.squareup.moshi:moshi:1.8.0'
     kapt "com.squareup.moshi:moshi-kotlin-codegen:1.8.0"
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:runner:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
-    implementation 'com.google.android.material:material:1.0.0'
+    androidTestImplementation 'androidx.test:runner:1.3.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    implementation 'com.google.android.material:material:1.2.1'
     implementation 'com.squareup.picasso:picasso:2.71828'
 
     implementation "android.arch.work:work-runtime-ktx:$work_manager_version"
-    implementation 'com.google.android.gms:play-services-location:16.0.0'
+    implementation 'com.google.android.gms:play-services-location:17.1.0'
 
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
 
-    implementation "com.google.firebase:firebase-core:16.0.4"
-    implementation 'com.google.firebase:firebase-storage:16.0.5'
+    implementation "com.google.firebase:firebase-core:18.0.0"
+    implementation 'com.google.firebase:firebase-storage:19.2.0'
 
     implementation 'com.firebaseui:firebase-ui-auth:6.2.0'
 

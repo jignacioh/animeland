@@ -8,14 +8,10 @@ import androidx.appcompat.app.AppCompatActivity
 import com.clearmind.animeland.R
 import com.clearmind.animeland.home.HomeActivity
 import com.clearmind.animeland.login.LoginActivity
-import com.firebase.ui.auth.AuthUI
-import com.firebase.ui.auth.AuthUI.IdpConfig
-import com.firebase.ui.auth.AuthUI.IdpConfig.*
 import com.firebase.ui.auth.IdpResponse
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.*
-import java.util.*
 
 
 class SplashActivity : AppCompatActivity() {

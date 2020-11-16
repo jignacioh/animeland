@@ -1,21 +1,25 @@
 package com.clearmind.animeland.home
 
+import android.Manifest.permission.ACCESS_COARSE_LOCATION
+import android.Manifest.permission.ACCESS_FINE_LOCATION
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import androidx.core.app.ActivityCompat
-import androidx.work.*
+import androidx.lifecycle.Observer
+import androidx.room.Room
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.PeriodicWorkRequest
+import androidx.work.WorkInfo
+import androidx.work.WorkManager
 import com.clearmind.animeland.BR
 import com.clearmind.animeland.R
 import com.clearmind.animeland.core.base.BaseActivity
-import com.clearmind.animeland.databinding.ActivityLoginBinding
+import com.clearmind.animeland.core.di.AppDatabase
 import com.clearmind.animeland.databinding.ActivityMainBinding
 import com.clearmind.animeland.login.LoginActivity
-import com.clearmind.animeland.login.LoginNavigator
-import com.clearmind.animeland.login.LoginViewModel
 import com.clearmind.animeland.model.User
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -29,25 +33,12 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_main.*
-import org.koin.android.viewmodel.ext.android.viewModel
-import java.util.concurrent.TimeUnit
-
-import android.Manifest.permission.ACCESS_COARSE_LOCATION
-import android.Manifest.permission.ACCESS_FINE_LOCATION
-import android.app.Activity
-import android.graphics.Bitmap
-import android.provider.MediaStore
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LifecycleRegistry
-import androidx.lifecycle.Observer
-import androidx.room.Room
-import com.clearmind.animeland.core.di.AppDatabase
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import org.koin.android.viewmodel.ext.android.viewModel
 import java.io.IOException
 import java.util.concurrent.ExecutionException
+import java.util.concurrent.TimeUnit
 
 class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNavigator {
 
@@ -127,11 +118,11 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNav
 
 
             // START Worker
-            var periodicWork = PeriodicWorkRequest.Builder(LocationWorker::class.java, 15, TimeUnit.MINUTES)
+            val periodicWork = PeriodicWorkRequest.Builder(LocationWorker::class.java, 15, TimeUnit.MINUTES)
                 .addTag(TAG)
                 .build()
             WorkManager.getInstance()
-                .enqueueUniquePeriodicWork("Location", ExistingPeriodicWorkPolicy.REPLACE, periodicWork);
+                .enqueueUniquePeriodicWork("Location", ExistingPeriodicWorkPolicy.REPLACE, periodicWork)
 
             //Toast.makeText(this@MainActivity, "Location Worker Started : " + periodicWork.getId(), Toast.LENGTH_SHORT)
             //    .show();
@@ -141,9 +132,9 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNav
                 .observe(this, Observer { workInfo ->
                     if (workInfo != null && workInfo.state == WorkInfo.State.SUCCEEDED) {
                         Log.i("MyWorker","fin")
-                        var latitude = workInfo.outputData.getDouble(LocationWorker.EXTRA_OUTPUT_LATITUDE,0.0)
-                        var longitude = workInfo.outputData.getDouble(LocationWorker.EXTRA_OUTPUT_LONGITUDE,0.0)
-                        var user = User(auth.currentUser!!.displayName,auth.currentUser!!.email,longitude,latitude)
+                        val latitude = workInfo.outputData.getDouble(LocationWorker.EXTRA_OUTPUT_LATITUDE,0.0)
+                        val longitude = workInfo.outputData.getDouble(LocationWorker.EXTRA_OUTPUT_LONGITUDE,0.0)
+                        val user = User(auth.currentUser!!.displayName,auth.currentUser!!.email,longitude,latitude)
                         user.uid=0
 
                         GlobalScope.launch {
@@ -170,14 +161,14 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNav
             writeNewUser(user.uid,user.displayName,user.email)
         } else {
             val intent = Intent(this, LoginActivity::class.java)
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
         }
     }
 
     private fun writeNewUser(userId: String, name: String?, email: String?) {
-        var user = User(name, email)
+        val user = User(name, email)
         user.uid=0
         database.child("users").child(userId).setValue(user)
 
@@ -207,11 +198,11 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNav
             }
         }
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.data != null) {
-            var imagePath = data.data
+            val imagePath = data.data
             try {
                 //val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, imagePath) as Bitmap
-                var fragment:UploadFragment = supportFragmentManager.findFragmentByTag(UploadFragment::class.java.simpleName) as UploadFragment
-                fragment.showImageGallery(imagePath)
+                val fragment:UploadFragment = supportFragmentManager.findFragmentByTag(UploadFragment::class.java.simpleName) as UploadFragment
+                fragment.showImageGallery(imagePath!!)
             } catch (e: IOException) {
                 e.printStackTrace()
             }
@@ -295,6 +286,15 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNav
             }
         }
     }
+
+    override fun onFragmentAttached() {
+        TODO("Not yet implemented")
+    }
+
+    override fun onFragmentDetached() {
+        TODO("Not yet implemented")
+    }
+
     fun isWorkScheduled(workInfos:List<WorkInfo>) : Boolean {
 		var running = false
 		if (workInfos == null || workInfos.isEmpty()) return false

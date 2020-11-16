@@ -1,19 +1,13 @@
 package com.clearmind.animeland.login
 
 import android.util.Log
+import android.view.View
+import android.widget.EditText
+import androidx.databinding.BindingAdapter
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.OnLifecycleEvent
 import com.clearmind.animeland.core.base.BaseViewModel
 import com.clearmind.animeland.register.LoginForm
-import com.google.firebase.auth.FirebaseAuth
-import android.app.Application
-import android.view.View
-import android.widget.EditText
-import androidx.databinding.BindingAdapter
-import com.clearmind.animeland.R
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.textfield.TextInputEditText
 
 
