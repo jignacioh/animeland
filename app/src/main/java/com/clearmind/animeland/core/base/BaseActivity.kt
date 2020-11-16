@@ -1,26 +1,25 @@
 package com.clearmind.animeland.core.base
 
-import android.content.Context
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
-import android.os.Bundle
-import androidx.annotation.LayoutRes
-import androidx.appcompat.app.AppCompatActivity
-import android.content.pm.PackageManager
-import android.os.Build
+import android.Manifest.permission.ACCESS_COARSE_LOCATION
+import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.annotation.TargetApi
 import android.app.ProgressDialog
-import android.view.inputmethod.InputMethodManager
-import com.clearmind.animeland.R
+import android.content.Context
+import android.content.pm.PackageManager
+import android.os.Build
+import android.os.Bundle
 import android.util.Log
+import android.view.inputmethod.InputMethodManager
+import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AlertDialog
-import android.Manifest.permission.ACCESS_FINE_LOCATION
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import android.Manifest.permission.ACCESS_COARSE_LOCATION
-import android.widget.Toast
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
+import com.clearmind.animeland.R
 
 
-abstract class BaseActivity<T : ViewDataBinding, V : BaseViewModel<*>> : AppCompatActivity() {
+abstract class BaseActivity<T : ViewDataBinding, V : BaseViewModel<*>> : AppCompatActivity(), BaseFragment.Callback {
 
     val progressDialog by lazy {
         ProgressDialog(this)
@@ -47,10 +46,6 @@ abstract class BaseActivity<T : ViewDataBinding, V : BaseViewModel<*>> : AppComp
     abstract val viewModel: V
 
     var builder : AlertDialog.Builder?=null
-
-    override fun attachBaseContext(newBase: Context) {
-        super.attachBaseContext(newBase)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -6,36 +6,39 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navOptions
 import coil.load
 import coil.transform.CircleCropTransformation
+import com.clearmind.animeland.BR
 import com.clearmind.animeland.R
+import com.clearmind.animeland.core.base.BaseFragment
 import com.clearmind.animeland.databinding.FragmentSettingBinding
-import com.clearmind.animeland.databinding.FragmentSettingBindingImpl
 import com.clearmind.animeland.login.LoginActivity
 import com.firebase.ui.auth.AuthUI
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 
 
-class SettingFragment : Fragment() {
+class SettingFragment : BaseFragment<FragmentSettingBinding, SettingViewModel>(), SettingNavigator {
 
     lateinit var binding: FragmentSettingBinding
 
+    override val layoutId: Int
+        get() = R.layout.fragment_setting
+
+    override val bindingVariable: Int
+        get() = BR.settingViewModel
+
+    override val viewModel: SettingViewModel
+        get() {
+            val model= SettingViewModel()
+            return model
+        }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentSettingBindingImpl.inflate(inflater)
+        binding = mViewDataBinding
+       // binding = FragmentSettingBindingImpl.inflate(inflater)
         return binding.root
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
     }
 
     override fun onResume() {
@@ -91,6 +94,10 @@ class SettingFragment : Fragment() {
                         activity?.finish()
                     }
         }
+    }
+
+    override fun updateUI() {
+        TODO("Not yet implemented")
     }
 
 }

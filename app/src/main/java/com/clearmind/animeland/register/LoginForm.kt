@@ -73,7 +73,7 @@ class LoginForm: BaseObservable() {
 
     fun onClick() {
         if (isValid()) {
-            liveDataLoginForm.setValue(fields)
+            liveDataLoginForm.value = fields
         }
     }
     @Bindable

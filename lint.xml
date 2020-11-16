@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <issue id="UnusedAttribute">
+        <ignore regexp="importantForAutofill"/>
+        <ignore regexp="autofillHints"/>
+    </issue>
+    <issue id="Autofill" severity="ignore" />
+    <issue id="ContentDescription" severity="ignore" />
+    <issue id="VectorPath" severity="ignore" />
+</lint>

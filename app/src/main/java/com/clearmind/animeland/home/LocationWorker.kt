@@ -6,16 +6,13 @@ import android.location.Geocoder
 import android.location.Location
 import android.util.Log
 import android.widget.Toast
-import androidx.room.Room
 import androidx.work.Data
 import androidx.work.ListenableWorker
 import androidx.work.Worker
 import androidx.work.WorkerParameters
-import com.clearmind.animeland.core.di.AppDatabase
 import com.google.android.gms.location.*
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
-import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -29,9 +26,8 @@ class LocationWorker(var context: Context, params: WorkerParameters) : Worker(co
     companion object {
         const val EXTRA_OUTPUT_LATITUDE = "latitude"
         const val EXTRA_OUTPUT_LONGITUDE = "longitude"
+        const val TAG = "MyWorker"
     }
-
-    public val TAG = "MyWorker"
 
     /**
      * The desired interval for location updates. Inexact. Updates may be more or less frequent.
@@ -64,9 +60,9 @@ class LocationWorker(var context: Context, params: WorkerParameters) : Worker(co
 
     @SuppressLint("MissingPermission")
     override fun doWork(): ListenableWorker.Result {
-        Log.d(TAG, "doWork: Done")
+        Log.d(Companion.TAG, "doWork: Done")
 
-        Log.d(TAG, "onStartJob: STARTING JOB..")
+        Log.d(Companion.TAG, "onStartJob: STARTING JOB..")
 
         val dateFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
 
@@ -84,47 +80,47 @@ class LocationWorker(var context: Context, params: WorkerParameters) : Worker(co
                 mLocationCallback = object : LocationCallback() {
                     override fun onLocationResult(locationResult: LocationResult) {
                         super.onLocationResult(locationResult)
-                        Log.w(TAG, "Location "+locationResult.lastLocation.latitude+" change "+locationResult.lastLocation.longitude)
+                        Log.w(Companion.TAG, "Location "+locationResult.lastLocation.latitude+" change "+locationResult.lastLocation.longitude)
                     }
                 }
 
                 val mLocationRequest = LocationRequest()
-                mLocationRequest.setInterval(UPDATE_INTERVAL_IN_MILLISECONDS)
-                mLocationRequest.setFastestInterval(FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS)
-                mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                mLocationRequest.interval = UPDATE_INTERVAL_IN_MILLISECONDS
+                mLocationRequest.fastestInterval = FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS
+                mLocationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
 
                 try {
                     mFusedLocationClient!!.lastLocation.addOnCompleteListener(object : OnCompleteListener<Location> {
                             override fun onComplete(task: Task<Location>) {
-                                Log.w(TAG, "onComplete")
-                                if (task.isSuccessful() && task.getResult() != null) {
-                                    mLocation = task.getResult()
-                                    Log.d(TAG, "Location : " + mLocation!!)
+                                Log.w(Companion.TAG, "onComplete")
+                                if (task.isSuccessful && task.result != null) {
+                                    mLocation = task.result
+                                    Log.d(Companion.TAG, "Location : " + mLocation!!)
 
-                                    Toast.makeText(context, "Location: " + mLocation!!.getLatitude() +" and "+mLocation!!.getLongitude(), Toast.LENGTH_SHORT)
+                                    Toast.makeText(context, "Location: " + mLocation!!.latitude +" and "+mLocation!!.longitude, Toast.LENGTH_SHORT)
                                         .show()
                                      latitude = mLocation!!.latitude
                                      longitude= mLocation!!.longitude
 
                                     mFusedLocationClient!!.removeLocationUpdates(mLocationCallback)
                                 } else {
-                                    Log.w(TAG, "Failed to get location.")
+                                    Log.w(Companion.TAG, "Failed to get location.")
                                 }
                             }
                         })
                 } catch (unlikely: SecurityException) {
-                    Log.e(TAG, "Lost location permission.$unlikely")
+                    Log.e(Companion.TAG, "Lost location permission.$unlikely")
                 }
 
                 try {
                     mFusedLocationClient!!.requestLocationUpdates(mLocationRequest, null)
                 } catch (unlikely: SecurityException) {
                     //Utils.setRequestingLocationUpdates(this, false);
-                    Log.e(TAG, "Lost location permission. Could not request updates. $unlikely")
+                    Log.e(Companion.TAG, "Lost location permission. Could not request updates. $unlikely")
                 }
 
             } else {
-                Log.d(TAG, "Time up to get location. Your time is : $DEFAULT_START_TIME to $DEFAULT_END_TIME")
+                Log.d(Companion.TAG, "Time up to get location. Your time is : $DEFAULT_START_TIME to $DEFAULT_END_TIME")
             }
         } catch (ignored: java.lang.Exception) {
             ignored.printStackTrace()
