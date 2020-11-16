@@ -11,7 +11,7 @@ pipeline {
 		}
 		stage('Clean Build') {
 			steps {
-		    		sh './gradlew clean'
+		    	sh './gradlew clean'
 			} 
 		}
         	stage('Compile') {
@@ -54,7 +54,6 @@ pipeline {
                 echo 'Static Analysis'
                 // Run Lint and analyse the results
                 sh './gradlew lint'
-                androidLint()
              }
         }
 	}
