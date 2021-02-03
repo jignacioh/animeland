@@ -5,13 +5,25 @@ import com.clearmind.animeland.core.base.BaseViewModel
 import android.view.View.OnFocusChangeListener
 import android.widget.EditText
 import androidx.databinding.BindingAdapter
+import androidx.lifecycle.MutableLiveData
+import com.clearmind.animeland.core.di.Failure
+import com.clearmind.animeland.form.auth.LoginForm
+import com.clearmind.animeland.login.LoginViewModel
+import com.clearmind.animeland.usecase.AuthUseCase
+import com.clearmind.animeland.model.auth.ProfileModel
+import com.clearmind.animeland.model.authentication.AuthModel
 import com.google.android.material.textfield.TextInputEditText
+import kotlinx.coroutines.*
+import kotlin.math.log
 
 
+class RegisterViewModel(private val getAuthUseCase: AuthUseCase): BaseViewModel<RegisterNavigator>(), CoroutineScope{
 
-class RegisterViewModel: BaseViewModel<RegisterNavigator>() {
-
+    override val coroutineContext = Job() + Dispatchers.IO
     var form = LoginForm()
+
+    var authenticatedUserLiveData : MutableLiveData<LoginViewModel.LoginState> = MutableLiveData()
+    var createdUserLiveData: MutableLiveData<ProfileModel> = MutableLiveData()
 
     private var onFocusEmail: OnFocusChangeListener?= null
     private var onFocusPassword: OnFocusChangeListener?= null
@@ -26,7 +38,7 @@ class RegisterViewModel: BaseViewModel<RegisterNavigator>() {
 
          onFocusPassword = OnFocusChangeListener { view, focused ->
              val et = view as EditText
-             if (et.text.isNotEmpty()&& !focused) {
+             if (et.text.isNotEmpty() && !focused) {
                  form.isPasswordValid(true)
              }
          }
@@ -66,4 +78,42 @@ class RegisterViewModel: BaseViewModel<RegisterNavigator>() {
         form.onClick()
     }
 
+    fun signInWithEmailCredentials(loginModel: AuthModel) {
+        //authenticatedUserLiveData = getAuthRepositoryImpl.emailSignInCredentials(loginModel)
+        //getAuthUseCase.execFirebaseRegister(loginModel).either(::handleFailure, ::handleSuccess)
+        authenticatedUserLiveData.postValue(LoginViewModel.LoginState.LOADING)
+        async(coroutineContext) {
+            getAuthUseCase.execFirebaseRegister(loginModel).let {
+                launch(  Job() + Dispatchers.Main) {
+                    it.either(::handleFailure, ::handleSuccess)
+                }
+            }
+        }
+    }
+
+    fun createUser(authenticatedProfile: ProfileModel) {
+        //createdUserLiveData = getAuthRepositoryImpl.createUserInFirestoreIfNotExists(authenticatedProfile)
+        //getAuthUseCase.execFireStoreCreate(authenticatedProfile).either(::handleFailure, ::handleSuccessFirestore)
+        async(coroutineContext) {
+            getAuthUseCase.execFireStoreCreate(authenticatedProfile).let {
+                launch(  Job() + Dispatchers.Main) {
+                    it.either(::handleFailure, ::handleSuccessFirestore)
+                }
+            }
+        }
+    }
+
+    private fun handleSuccess(loginState: LoginViewModel.LoginState) {
+        authenticatedUserLiveData.postValue(loginState)
+    }
+
+    private fun handleSuccessFirestore(loginState: LoginViewModel.LoginState) {
+        authenticatedUserLiveData.postValue(loginState)
+        //createdUserLiveData.postValue(mutableLiveData)
+    }
+
+    override fun handleFailure(failure: Failure) {
+        getNavigator()!!.showFailureRegister(failure.exception.message!!)
+        Log.e("ERROR",failure.exception.message!!)
+    }
 }

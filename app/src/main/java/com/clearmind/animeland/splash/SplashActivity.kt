@@ -1,26 +1,36 @@
 package com.clearmind.animeland.splash
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import com.clearmind.animeland.BR
 import com.clearmind.animeland.R
+import com.clearmind.animeland.core.base.BaseActivity
+import com.clearmind.animeland.core.di.Constants
+import com.clearmind.animeland.databinding.ActivitySplashBinding
 import com.clearmind.animeland.home.HomeActivity
 import com.clearmind.animeland.login.LoginActivity
-import com.firebase.ui.auth.IdpResponse
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import kotlinx.coroutines.*
+import com.clearmind.animeland.model.auth.ProfileModel
+import com.clearmind.animeland.usecase.AuthUseCase
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class SplashActivity : AppCompatActivity() {
+class SplashActivity : BaseActivity<ActivitySplashBinding, SplashViewModel>(),
+        SplashNavigator {
 
-    private var activityScope = CoroutineScope(Dispatchers.Main)
-    private var mAuthListener: FirebaseAuth.AuthStateListener? = null
-    //Firebase Auth
-    private lateinit var mAuth: FirebaseAuth
-    private var user: FirebaseUser? = null
+    override val layoutId: Int
+        get() = R.layout.activity_splash
+
+    override val bindingVariable: Int
+        get() = BR.splashViewModel
+
+    override val viewModel: SplashViewModel
+        get() {
+            val viewModel: SplashViewModel by viewModel()
+            return viewModel
+        }
+    private var mActivitySplashBinding: ActivitySplashBinding? = null
 
     companion object {
         const val RC_SIGN_IN = 1000
@@ -28,91 +38,86 @@ class SplashActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_splash)
-
-        activityScope.launch {
-            delay(3000)
-            navigateNextScreen()
-        }
+        mActivitySplashBinding = viewDataBinding
+        viewModel.setNavigator(this)
+        lifecycle.addObserver(viewModel)
+        initObservers()
     }
 
-    private fun navigateNextScreen() {
-        user = FirebaseAuth.getInstance().currentUser
-
-        user?.let {
-            val nombre = it.displayName
-            val email = it.email
-            val intent = Intent(this@SplashActivity, HomeActivity::class.java)
-            intent.putExtra("correo",email)
-            intent.putExtra("nombre",nombre)
-            startActivity(intent)
-            finish()
-        }?:run {
-            val homeIntent = Intent(this@SplashActivity, LoginActivity::class.java)
-            startActivity(homeIntent)
-            finish()
-        }
-        /*mAuthListener = FirebaseAuth.AuthStateListener {
-            firebaseAuth: FirebaseAuth ->
-            user = firebaseAuth.currentUser
-            if(user != null){
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
-                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
-                finish()
-            }else{
-                val intent = Intent(this, LoginActivity::class.java)
-                startActivity(intent)
-                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
-                finish()
+    private fun initObservers() {
+        viewModel.isUserAuthenticatedLiveData.observe(this, Observer<SplashViewModel.SplashState> { value ->
+            when (val loginState = value!!) {
+                is SplashViewModel.SplashState.ErrorSplash -> {
+                    hideProgressDialog()
+                    when(loginState.failure){
+                        is AuthUseCase.GetAuthFailure.FirebaseSignIn -> {
+                            //showSimpleDialog(getString(R.string.app_name), "SignIn Firebase Error")
+                            val intent = Intent(this@SplashActivity, LoginActivity::class.java)
+                            startActivity(intent)
+                        }
+                        else -> showSimpleDialog(getString(R.string.app_name), "Error Generico")
+                    }
+                }
+                is SplashViewModel.SplashState.LoadingSplash -> showProgressDialog()
+                is SplashViewModel.SplashState.SuccessVerifySignIn -> {
+                    hideProgressDialog()
+                    if (!loginState.profileModel.isAuthenticated) {
+                        goToAuthInActivity()
+                        finish()
+                    } else {
+                        getUserFromDatabase(loginState.profileModel.uid)
+                    }
+                }
+                is SplashViewModel.SplashState.SuccessValidSignIn -> {
+                    hideProgressDialog()
+                    goToMainActivity(loginState.profileModel)
+                    finish()
+                }
             }
-        }*/
 
-        // Choose authentication providers
-        /*val providers: List<IdpConfig> = listOf(
-                EmailBuilder().build(),
-                PhoneBuilder().build(),
-                GoogleBuilder().build(),
-                FacebookBuilder().build())
-        // Create and launch sign-in intent
-        startActivityForResult(
-                AuthUI.getInstance()
-                        .createSignInIntentBuilder()
-                        .setAvailableProviders(providers)
-                        .setLogo(R.drawable.ic_symbol)
-                        .setTheme(R.style.AppTheme)
-                        .build(),
-                RC_SIGN_IN)*/
+        })
+    }
+
+    override fun onResume() {
+        super.onResume()
+        performIfUserIsAuthenticated()
 
     }
 
-    private fun initValues(){
-
+    private fun performIfUserIsAuthenticated() {
+        viewModel.checkIfUserIsAuthenticated()
     }
 
     @ExperimentalCoroutinesApi
     override fun onPause() {
-        activityScope.cancel()
         super.onPause()
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
+    override fun onFragmentAttached() {
+        TODO("Not yet implemented")
+    }
 
-        if (requestCode == RC_SIGN_IN) {
-            val response = IdpResponse.fromResultIntent(data)
+    override fun onFragmentDetached() {
+        TODO("Not yet implemented")
+    }
 
-            if (resultCode == Activity.RESULT_OK) {
-                // Successfully signed in
-                val user = FirebaseAuth.getInstance().currentUser
-                // ...
-            } else {
-                // Sign in failed. If response is null the user canceled the
-                // sign-in flow using the back button. Otherwise check
-                // response.getError().getErrorCode() and handle the error.
-                // ...
-                Log.e("ERROR", "splash 1")
-            }
-        }
+    override fun navigateToAuthScreen() {
+        val intent = Intent(this@SplashActivity, LoginActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun goToAuthInActivity() {
+        val intent = Intent(this@SplashActivity, LoginActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun getUserFromDatabase(uid: String) {
+        viewModel.setUid(uid)
+    }
+
+    private fun goToMainActivity(profile: ProfileModel) {
+        val intent = Intent(this@SplashActivity, HomeActivity::class.java)
+        intent.putExtra(Constants.USER, profile)
+        startActivity(intent)
     }
 }

@@ -35,7 +35,7 @@ import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.IOException
 import java.util.concurrent.ExecutionException
 import java.util.concurrent.TimeUnit
@@ -63,8 +63,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNav
 
     private var mActivityTasksBinding: ActivityMainBinding? = null
 
-
-    private var db: AppDatabase ?=  null
+    private var db: AppDatabase? =  null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

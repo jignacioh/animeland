@@ -3,7 +3,6 @@ package com.clearmind.animeland.model.dao
 import androidx.room.*
 import com.clearmind.animeland.model.User
 
-
 @Dao
 interface UserDao {
     @Query("SELECT * FROM user")

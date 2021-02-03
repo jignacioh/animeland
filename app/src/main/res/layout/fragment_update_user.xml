@@ -5,6 +5,12 @@
 
     <data>
 
+        <import type="android.view.View" />
+
+        <variable
+            name="updateUserViewModel"
+            type="com.clearmind.animeland.updateprofile.UpdateUserFragment" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -12,17 +18,56 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="8dp"
-        tools:context=".home.UpdateUserFragment">
+        tools:context=".updateprofile.UpdateUserFragment">
 
-        <ImageView
+        <RelativeLayout
+            android:id="@+id/profileRelativeLayout"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_marginTop="40dp"
+            android:adjustViewBounds="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profileImageView"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/ic_profile_account_128"/>
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/cameraPhotoProfileImageView"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="12dp"
+                android:src="@drawable/ic_camera_circle"/>
+
+        </RelativeLayout>
+
+        <!--ImageView
             android:id="@+id/profileImageView"
             android:layout_width="120dp"
             android:layout_height="120dp"
             android:layout_marginTop="40dp"
+            android:adjustViewBounds="true"
             android:src="@drawable/ic_profile_account_128"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/cameraPhotoProfileImageView"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_camera_circle"
+            android:baselineAlignBottom="true"
+            app:layout_constraintBaseline_toBaselineOf="@+id/profileImageView"
+            app:layout_constraintStart_toEndOf="@id/profileImageView"/-->
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilName"
@@ -34,7 +79,7 @@
             android:theme="@style/TextInputLayoutAppearanceWhite"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/profileImageView" >
+            app:layout_constraintTop_toBottomOf="@+id/profileRelativeLayout" >
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -63,8 +108,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/white"
-                android:hint="@string/hint_mail"
-                android:inputType="textEmailAddress"
+                android:hint="@string/hint_last_name"
+                android:inputType="textPersonName"
                 android:singleLine="true"
                 android:imeOptions="actionDone"/>
 

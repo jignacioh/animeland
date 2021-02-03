@@ -1,4 +1,4 @@
-package com.clearmind.animeland.register
+package com.clearmind.animeland.form.auth
 
 import com.clearmind.animeland.R
 

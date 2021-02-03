@@ -6,7 +6,8 @@
     <string name="text_sign_in">INGRESAR</string>
     <string name="hint_password">Contraseña</string>
     <string name="hint_mail">Correo</string>
-    <string name="hint_name">Name</string>
+    <string name="hint_name">First Name</string>
+    <string name="hint_last_name">Last Name</string>
     <string name="btn_register_me">REGISTRARME</string>
 
     <string name="error_format_invalid">Correo inválido</string>
@@ -33,5 +34,8 @@
 
     <string name="action_logout">Logout</string>
     <string name="action_update">Update my profile</string>
+    <string name="label_sign_up">Don\'t have an account? Sign Up</string>
+    <string name="label_forgot_password">Forgot Password?</string>
+    <string name="label_or_connect_using">Or connect using</string>
 
 </resources>

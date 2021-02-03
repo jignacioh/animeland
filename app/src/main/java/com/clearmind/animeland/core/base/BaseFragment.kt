@@ -9,6 +9,11 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.navOptions
+import androidx.room.Room
+import com.clearmind.animeland.R
+import com.clearmind.animeland.core.di.AppDatabase
+import com.clearmind.animeland.model.auth.ProfileModel
 
 abstract class BaseFragment<T : ViewDataBinding, V : BaseViewModel<*>> : Fragment() {
 
@@ -36,6 +41,19 @@ abstract class BaseFragment<T : ViewDataBinding, V : BaseViewModel<*>> : Fragmen
      * @return view model instance
      */
     abstract val viewModel: V
+
+    private var db: AppDatabase? =  null
+
+    var profileModel: ProfileModel? = null
+
+    val options = navOptions {
+        anim {
+            enter = R.anim.slide_in_right
+            exit = R.anim.slide_out_left
+            popEnter = R.anim.slide_in_left
+            popExit = R.anim.slide_out_right
+        }
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -65,6 +83,12 @@ abstract class BaseFragment<T : ViewDataBinding, V : BaseViewModel<*>> : Fragmen
         mViewDataBinding.executePendingBindings()
     }
 
+    fun initDatabase(context: Context){
+        db = Room.databaseBuilder(
+                context,
+                AppDatabase::class.java, "database-name"
+        ).build()
+    }
 
     fun hideKeyboard() {
         mActivity?.hideKeyboard()

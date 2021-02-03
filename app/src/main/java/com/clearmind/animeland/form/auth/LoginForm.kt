@@ -1,4 +1,4 @@
-package com.clearmind.animeland.register
+package com.clearmind.animeland.form.auth
 
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
@@ -6,8 +6,6 @@ import com.clearmind.animeland.model.authentication.AuthModel
 import androidx.lifecycle.MutableLiveData
 import com.clearmind.animeland.BR
 import com.clearmind.animeland.R
-
-
 
 
 class LoginForm: BaseObservable() {
@@ -36,16 +34,16 @@ class LoginForm: BaseObservable() {
         if (email != null && email.length > 5) {
             val indexOfAt = email.indexOf("@")
             val indexOfDot = email.lastIndexOf(".")
-            if (indexOfAt > 0 && indexOfDot > indexOfAt && indexOfDot < email.length - 1) {
+            return if (indexOfAt in 1 until indexOfDot && indexOfDot < email.length - 1) {
                 errors.setEmail(null)
                 notifyPropertyChanged(BR.valid)
-                return true
+                true
             } else {
                 if (setMessage) {
                     errors.setEmail(R.string.error_format_invalid)
                     notifyPropertyChanged(BR.valid)
                 }
-                return false
+                false
             }
         }
         if (setMessage) {
@@ -57,17 +55,16 @@ class LoginForm: BaseObservable() {
     }
     fun isPasswordValid(setMessage: Boolean) : Boolean{
         val password = fields.password
-        if (password != null && password.length > 5) {
+        return if (password != null && password.length > 5) {
             errors.setPassword(null)
             notifyPropertyChanged(BR.valid)
-            return true
+            true
         } else {
             if (setMessage) {
                 errors.setPassword(R.string.error_pass_too_short)
                 notifyPropertyChanged(BR.valid)
             }
-
-            return false
+            false
         }
     }
 

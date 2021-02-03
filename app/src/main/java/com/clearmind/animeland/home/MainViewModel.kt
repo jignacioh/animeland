@@ -4,6 +4,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import com.clearmind.animeland.core.base.BaseViewModel
+import com.clearmind.animeland.core.di.Failure
 import com.google.firebase.auth.FirebaseAuth
 
 class MainViewModel : BaseViewModel<MainNavigator>(),LifecycleObserver {
@@ -20,6 +21,10 @@ class MainViewModel : BaseViewModel<MainNavigator>(),LifecycleObserver {
     fun onStart() {
         val currentUser = auth.currentUser
         getNavigator()!!.updateUI(currentUser)
+    }
+
+    override fun handleFailure(failure: Failure) {
+
     }
 
 }

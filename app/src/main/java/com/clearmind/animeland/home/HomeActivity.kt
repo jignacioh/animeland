@@ -1,31 +1,55 @@
 package com.clearmind.animeland.home
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
+import com.clearmind.animeland.BR
 import com.clearmind.animeland.R
+import com.clearmind.animeland.core.base.BaseActivity
 import com.clearmind.animeland.databinding.ActivityHomeBinding
 import com.clearmind.animeland.extensions.setupWithNavController
+import com.clearmind.animeland.model.auth.ProfileModel
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class HomeActivity : AppCompatActivity() {
+class HomeActivity: BaseActivity<ActivityHomeBinding, HomeViewModel>(), HomeNavigator {
 
     private var currentNavController: LiveData<NavController>? = null
-
     lateinit var navController : NavController
     lateinit var appBarConfig : AppBarConfiguration
-    private lateinit var binding: ActivityHomeBinding
+    //private lateinit var binding: ActivityHomeBinding
+    private lateinit var auth: FirebaseAuth
+    private lateinit var database: DatabaseReference
+    private lateinit var profileModel: ProfileModel
+
+    override val viewModel: HomeViewModel
+        get() {
+            val model: HomeViewModel by viewModel()
+            return model
+        }
+
+    override val layoutId: Int
+        get() = R.layout.activity_home
+    override val bindingVariable: Int
+        get() = BR.homeViewModel
+
+    lateinit var mActivityTasksBinding: ActivityHomeBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //setContentView(R.layout.activity_home)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_home)
-        val bottomNavigationView = binding.bottomNavigationView
-        setSupportActionBar(binding.toolbar)
+
+        profileModel = intent.getSerializableExtra("USER") as ProfileModel
+        mActivityTasksBinding = viewDataBinding!!
+        viewModel.setNavigator(this)
+        lifecycle.addObserver(viewModel)
+
+        val bottomNavigationView = mActivityTasksBinding.bottomNavigationView
+        setSupportActionBar(mActivityTasksBinding.toolbar)
 
         //navController = findNavController(R.id.nav_home_fragment)
         val navGraphIds = listOf(R.navigation.home_navigation, R.navigation.general_navigation, R.navigation.upload_navigation, R.navigation.setting_navigation)
@@ -60,7 +84,31 @@ class HomeActivity : AppCompatActivity() {
         currentNavController = controller
     }
 
+    override fun onStart() {
+        super.onStart()
+        initValues(profileModel)
+    }
+
+    override fun onFragmentAttached() {
+
+    }
+
+    override fun onFragmentDetached() {
+
+    }
+
+    private fun initValues(profileModel: ProfileModel) {
+        viewModel.persistUserAuthenticated(profileModel)
+    }
     override fun onSupportNavigateUp(): Boolean {
         return currentNavController?.value?.navigateUp() ?: false
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    override fun doSomething() {
+
     }
 }

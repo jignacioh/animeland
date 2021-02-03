@@ -23,7 +23,7 @@
 
     <fragment
         android:id="@+id/userUpdateFragment"
-        android:name="com.clearmind.animeland.home.UpdateUserFragment"
+        android:name="com.clearmind.animeland.updateprofile.UpdateUserFragment"
         android:label="Update"
         tools:layout="@layout/fragment_update_user">
 

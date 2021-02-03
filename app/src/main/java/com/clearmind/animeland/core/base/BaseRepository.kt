@@ -13,33 +13,37 @@ import kotlin.coroutines.suspendCoroutine
 open class BaseRepository{
 
     suspend fun <T : Any> safeApiCall(call: suspend () -> Response<T>, errorMessage: String): T? {
-
         val result : Result<T> = safeApiResult(call,errorMessage)
-        var data : T? = null
-
-        when(result) {
+        val data: T?
+        data = when(result) {
             is Result.Success ->
-                data = result.data
+                result.data
+            is Result.SuccessEmpty ->
+                null
             is Result.Error -> {
                 Log.d("Repository", "$errorMessage y Exception - ${result.exception}")
+                throw result.exception
             }
         }
-
-
         return data
-
     }
 
     private suspend fun <T: Any> safeApiResult(call: suspend ()-> Response<T>, errorMessage: String) : Result<T> {
         val response = call.invoke()
-        if(response.isSuccessful) return Result.Success(response.body()!!)
-
+        if(response.isSuccessful) {
+            if (response.code()==204) return Result.SuccessEmpty
+            return Result.Success(response.body()!!)
+        }
+        response.errorBody()?.string()?.let {
+            if(it.isNotEmpty())
+                return Result.Error(BaseException(it)) }
         return Result.Error(IOException("Error, Custom ERROR - $errorMessage"))
     }
 
     sealed class Result<out T: Any> {
         data class Success<out T : Any>(val data: T) : Result<T>()
         data class Error(val exception: Exception) : Result<Nothing>()
+        object SuccessEmpty : Result<Nothing>()
     }
     /*
     suspend fun <T : Any> getResult(call: Call<T>): Result<T> = suspendCoroutine {
@@ -78,7 +82,5 @@ open class BaseRepository{
     interface Mappable<out T : Any> {
         fun mapToResult(): Result<T>
     }
-
-   
 
 }

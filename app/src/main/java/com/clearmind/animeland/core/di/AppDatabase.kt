@@ -5,11 +5,14 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.clearmind.animeland.model.User
+import com.clearmind.animeland.model.auth.Profile
+import com.clearmind.animeland.model.dao.ProfileDao
 import com.clearmind.animeland.model.dao.UserDao
 
-@Database(entities = arrayOf(User::class), version = 1,exportSchema = false)
+@Database(entities = [User::class, Profile::class], version = 1,exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
+    abstract fun profileDao(): ProfileDao
 
     companion object {
         @Volatile private var instance: AppDatabase? = null

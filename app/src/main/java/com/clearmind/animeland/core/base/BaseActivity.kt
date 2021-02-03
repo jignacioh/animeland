@@ -10,6 +10,7 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -129,6 +130,10 @@ abstract class BaseActivity<T : ViewDataBinding, V : BaseViewModel<*>> : AppComp
             dialog?.dismiss()
             builder=null
         }
+    }
+
+    fun toastMessage(name: String?) {
+        Toast.makeText(this, "Hi $name!\nYour account was successfully created.", Toast.LENGTH_LONG).show()
     }
 
 }

@@ -6,8 +6,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navOptions
+import coil.Coil
 import coil.load
 import coil.transform.CircleCropTransformation
 import com.clearmind.animeland.BR
@@ -15,12 +17,15 @@ import com.clearmind.animeland.R
 import com.clearmind.animeland.core.base.BaseFragment
 import com.clearmind.animeland.databinding.FragmentSettingBinding
 import com.clearmind.animeland.login.LoginActivity
+import com.facebook.AccessToken
 import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class SettingFragment : BaseFragment<FragmentSettingBinding, SettingViewModel>(), SettingNavigator {
 
+    private var accessToken: AccessToken? = null
     lateinit var binding: FragmentSettingBinding
 
     override val layoutId: Int
@@ -31,73 +36,82 @@ class SettingFragment : BaseFragment<FragmentSettingBinding, SettingViewModel>()
 
     override val viewModel: SettingViewModel
         get() {
-            val model= SettingViewModel()
+            val model : SettingViewModel by viewModel()
             return model
         }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        accessToken = AccessToken.getCurrentAccessToken()
+        //initValues()
+        return super.onCreateView(inflater,container,savedInstanceState)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding = mViewDataBinding
-       // binding = FragmentSettingBindingImpl.inflate(inflater)
-        return binding.root
+        //lifecycle.addObserver(viewModel)
+    }
+
+    private fun initValues(){
+        viewModel.loadProfileInformation()
+        viewModel.profileLiveData.observe(viewLifecycleOwner) {
+            profileModel = it
+            onResume()
+        }
     }
 
     override fun onResume() {
         super.onResume()
-        initView()
-        initListeners()
+        viewModel.loadProfileInformation()
+        viewModel.profileLiveData.observe(viewLifecycleOwner) {
+            profileModel = it
+            initView()
+            initListeners()
+        }
     }
 
     private fun initView() {
-        val user = FirebaseAuth.getInstance().currentUser
-        if (user != null) {
-            // Name, email address, and profile photo Url
-            binding.userTextView.text = user.displayName
-
-            binding.mailTextView.text = user.email
-
-            val photoUrl: Uri? = user.photoUrl
-            photoUrl.let {
-                binding.profileImageView.load(it) {
-                    placeholder(R.drawable.ic_profile_account_128)
-                    transformations(CircleCropTransformation())
-                }
+        profileModel?.let { itProfile ->
+            if (itProfile.name != null) {
+                binding.userTextView.text = itProfile.name
             }
-            // Check if user's email is verified
-            val emailVerified = user.isEmailVerified
+            binding.mailTextView.text = itProfile.email
 
-            // The user's ID, unique to the Firebase project. Do NOT use this value to
-            // authenticate with your backend server, if you have one. Use
-            // FirebaseUser.getIdToken() instead.
-            val uid = user.uid
+            itProfile.photo?.let {itPhoto ->
+                if (itPhoto.isNotEmpty()) {
+                    binding.profileImageView.load(Uri.parse(itPhoto)) {
+                        placeholder(R.drawable.ic_profile_account_128)
+                        transformations(CircleCropTransformation())
+                    }
+                }else {
+                    binding.profileImageView.load(R.drawable.ic_profile_account_128, Coil.imageLoader(requireContext()))
+                }
+            }?: kotlin.run {
+                binding.profileImageView.load(R.drawable.ic_profile_account_128, Coil.imageLoader(requireContext()))
+            }
         }
     }
 
     private fun initListeners() {
-        val options = navOptions {
-            anim {
-                enter = R.anim.slide_in_right
-                exit = R.anim.slide_out_left
-                popEnter = R.anim.slide_in_left
-                popExit = R.anim.slide_out_right
+        profileModel?.let { itProfile ->
+            binding.updateTextView.setOnClickListener {
+                findNavController().navigate(R.id.userUpdateFragment, null, options)
             }
-        }
-        binding.updateTextView.setOnClickListener {
-            findNavController().navigate(R.id.userUpdateFragment, null, options)
-        }
 
-        binding.logoutTextView.setOnClickListener {
-            AuthUI.getInstance()
-                    .signOut(requireContext().applicationContext)
-                    .addOnCompleteListener {
-                        val homeIntent = Intent(activity, LoginActivity::class.java)
-                        startActivity(homeIntent)
-                        activity?.finish()
-                    }
+            binding.logoutTextView.setOnClickListener {
+                viewModel.signOutCredentials(itProfile.uid)
+                AuthUI.getInstance()
+                        .signOut(requireContext().applicationContext)
+                        .addOnCompleteListener {
+                            val homeIntent = Intent(activity, LoginActivity::class.java)
+                            startActivity(homeIntent)
+                            activity?.finish()
+                        }
+            }
         }
     }
 
     override fun updateUI() {
         TODO("Not yet implemented")
     }
-
 }

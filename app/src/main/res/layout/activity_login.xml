@@ -19,35 +19,35 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@android:color/black"
-                tools:context=".home.MainActivity">
+                tools:context=".login.LoginActivity">
 
             <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guidelineTop"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    app:layout_constraintGuide_percent="0.1"/>
+                    app:layout_constraintGuide_percent="0.05"/>
 
             <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guidelineLeft"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.15"/>
+                    app:layout_constraintGuide_percent="0.1"/>
 
             <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guidelineRight"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.85"/>
+                    app:layout_constraintGuide_percent="0.9"/>
 
             <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guidelineBottom"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    app:layout_constraintGuide_percent="0.9"/>
+                    app:layout_constraintGuide_percent="0.95"/>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/consraintLayoutLoginView"
@@ -69,34 +69,34 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        app:layout_constraintGuide_percent="0.2" />
+                        app:layout_constraintGuide_percent="0.23" />
 
                 <androidx.constraintlayout.widget.Guideline
                         android:id="@+id/guidelineLoginView2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        app:layout_constraintGuide_percent="0.4" />
+                        app:layout_constraintGuide_percent="0.33" />
 
                 <androidx.constraintlayout.widget.Guideline
                         android:id="@+id/guidelineLoginView3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        app:layout_constraintGuide_percent="0.6"/>
+                        app:layout_constraintGuide_percent="0.44"/>
 
                 <androidx.constraintlayout.widget.Guideline
                         android:id="@+id/guidelineLoginView4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        app:layout_constraintGuide_percent="0.75" />
+                        app:layout_constraintGuide_percent="0.69" />
                 <androidx.constraintlayout.widget.Guideline
                         android:id="@+id/guidelineLoginView5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        app:layout_constraintGuide_percent="0.9" />
+                        app:layout_constraintGuide_percent="0.89" />
                 <androidx.constraintlayout.widget.Guideline
                         android:id="@+id/guidelineLoginView6"
                         android:layout_width="wrap_content"
@@ -133,6 +133,8 @@
                             android:textColor="@android:color/white"
                             android:text="@={loginViewModel.form.fields.email}"
                             android:hint="@string/hint_mail"
+                            android:drawableStart="@drawable/ic_account_person"
+                            android:drawablePadding="4dp"
                             android:singleLine="true"
                             android:inputType="textEmailAddress"
                             android:imeOptions="actionNext"
@@ -161,6 +163,8 @@
                             android:hint="@string/hint_password"
                             android:text="@={loginViewModel.form.fields.password}"
                             android:inputType="textPassword"
+                            android:drawableStart="@drawable/ic_user_lock"
+                            android:drawablePadding="4dp"
                             android:singleLine="true"
                             android:imeOptions="actionDone"
                             app:onFocus="@{loginViewModel.getPasswordOnFocusChangeListener()}"
@@ -174,8 +178,8 @@
                         android:id="@+id/btn_log_in"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="4dp"
+                        android:layout_marginTop="4dp"
                         android:text="@string/text_sign_in"
                         android:textColor="@android:color/white"
                         android:theme="@style/PrimaryButton"
@@ -191,19 +195,85 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="4dp"
                         android:text="@string/text_register"
                         android:theme="@style/PrimaryButton"
                         app:layout_constraintBottom_toTopOf="@+id/guidelineLoginView5"
                         app:layout_constraintEnd_toEndOf="parent"
+                        android:visibility="gone"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/guidelineLoginView4"
                         android:onClick="@{() -> loginViewModel.goToRegisterActivity()}"/>
 
+                <com.google.android.gms.common.SignInButton
+                    android:id="@+id/googleSignInButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toTopOf="@+id/signInFacebookButton"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/guidelineLoginView4"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
+                    app:buttonSize="wide"/>
+
+                <com.facebook.login.widget.LoginButton
+                    android:id="@+id/signInFacebookButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toTopOf="@+id/guidelineLoginView5"
+                    app:layout_constraintTop_toBottomOf="@+id/googleSignInButton"
+                    app:layout_constraintEnd_toEndOf="@+id/googleSignInButton"
+                    app:layout_constraintStart_toStartOf="@+id/googleSignInButton"
+                    android:paddingTop="13dp"
+                    android:paddingBottom="13dp"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginEnd="4dp"
+                    />
+
                 <TextView
+                    android:id="@+id/label_action_to_sign_up"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_sign_up"
+                    android:gravity="center"
+                    android:padding="4dp"
+                    android:textColor="@android:color/white"
+                    app:layout_constraintBottom_toTopOf="@+id/guidelineLoginView6"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    />
+
+                <TextView
+                    android:id="@+id/label_connect_using"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_or_connect_using"
+                    android:gravity="center"
+                    android:textColor="@android:color/white"
+                    app:layout_constraintBottom_toTopOf="@+id/guidelineLoginView4"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/btn_log_in"/>
+
+                <TextView
+                    android:id="@+id/textView_forgot_password"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_forgot_password"
+                    android:gravity="end"
+                    android:padding="4dp"
+                    android:textColor="@android:color/white"
+                    app:layout_constraintBottom_toTopOf="@+id/btn_log_in"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/guidelineLoginView3"/>
+
+                <!--TextView
                     android:id="@+id/label_go_to_sign_up"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
                     android:clickable="true"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
@@ -214,7 +284,7 @@
                     app:layout_constraintBottom_toTopOf="@+id/guidelineLoginView6"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/guidelineLoginView5" />
+                    app:layout_constraintTop_toBottomOf="@+id/googleSignInButton" /-->
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
